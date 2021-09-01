@@ -32,5 +32,19 @@ X_test <- read.table("X_test.txt")
 Y_test <- read.table("Y_test.txt")
 subject_test <- read.table("subject_test.txt")
 
+
+# Set the name for the data set
+
+colnames (X_test) <- features[,2]
+colnames (X_train) <- features[,2]
+
+colnames (Y_test) <- "activity label"
+colnames (Y_train) <-"activity label"
+
+colnames (subject_train) <- "Subject ID"
+colnames (subject_test) <- "Subject ID"
+
 # Merge the train set
 train_set <-cbind(X_train,Y_train,subject_train)
+
+
