@@ -46,5 +46,6 @@ colnames (subject_test) <- "Subject ID"
 
 # Merge the train set
 train_set <-cbind(X_train,Y_train,subject_train)
+test_set <-cbind(X_test,Y_test,subject_test)
 
 
