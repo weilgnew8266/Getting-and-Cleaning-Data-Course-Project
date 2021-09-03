@@ -7,7 +7,7 @@
 #   5.From the data set in step 4, creates a second, independent tidy data set with the average of 
 #     each variable for each activity and each subject.
 
-
+## Step 1: read and merge the data sets ##
 # Set the directory to the files
 setwd("./getdata_projectfiles_UCI HAR Dataset/UCI HAR Dataset")
 
@@ -16,7 +16,6 @@ features <- read.table('features.txt')
 
 # retrieve activity labels
 activity_labels <- read.table('activity_labels.txt')
-
 
 # retrieve the train data set
 setwd("./train")
@@ -32,9 +31,7 @@ X_test <- read.table("X_test.txt")
 Y_test <- read.table("Y_test.txt")
 subject_test <- read.table("subject_test.txt")
 
-
 # Set the name for the data set
-
 colnames (X_test) <- features[,2]
 colnames (X_train) <- features[,2]
 
@@ -44,8 +41,25 @@ colnames (Y_train) <-"activity label"
 colnames (subject_train) <- "Subject ID"
 colnames (subject_test) <- "Subject ID"
 
-# Merge the train set
+# Merge the train set and test set
 train_set <-cbind(X_train,Y_train,subject_train)
 test_set <-cbind(X_test,Y_test,subject_test)
+
+# Merge all data sets into one
+AllData <- rbind(train_set, test_set)
+
+
+## Step 2: Extracts only the measurements on the mean and standard deviation for each measurement ##
+
+# Extract the 
+
+Data_Mean_Std <- (grepl("activity label" , colNames) | 
+                   grepl("Subject ID" , colNames) | 
+                   grepl("mean.." , colNames) | 
+                   grepl("std.." , colNames) 
+)
+
+
+
 
 
