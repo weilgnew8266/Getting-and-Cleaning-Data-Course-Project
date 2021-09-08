@@ -31,15 +31,16 @@ X_test <- read.table("X_test.txt")
 Y_test <- read.table("Y_test.txt")
 subject_test <- read.table("subject_test.txt")
 
+## 4.Appropriately labels the data set with descriptive variable names. ##
 # Set the name for the data set
 colnames (X_test) <- features[,2]
 colnames (X_train) <- features[,2]
 
-colnames (Y_test) <- "activity label"
-colnames (Y_train) <-"activity label"
+colnames (Y_test) <- "activity_label"
+colnames (Y_train) <-"activity_label"
 
-colnames (subject_train) <- "Subject ID"
-colnames (subject_test) <- "Subject ID"
+colnames (subject_train) <- "Subject_ID"
+colnames (subject_test) <- "Subject_ID"
 
 # Merge the train set and test set
 train_set <-cbind(X_train,Y_train,subject_train)
@@ -51,15 +52,29 @@ AllData <- rbind(train_set, test_set)
 
 ## Step 2: Extracts only the measurements on the mean and standard deviation for each measurement ##
 
-# Extract the 
+# Extract the data with means and standard deviations
 
-Data_Mean_Std <- (grepl("activity label" , colNames) | 
-                   grepl("Subject ID" , colNames) | 
-                   grepl("mean.." , colNames) | 
-                   grepl("std.." , colNames) 
-)
-
+data_mean_std <- AllData[grepl("mean", colnames(AllData)) | 
+                            grepl("std", colnames(AllData)) | 
+                            grepl("Subject_ID", colnames(AllData)) |
+                            grepl("activity_label" , colnames(AllData))]
 
 
+## Step 3: Uses descriptive activity names to name the activities in the data set ##
+# Set the column name for the activity_labels, to match the activity label with the descriptive activity names
+colnames(activity_labels) <- c('activity label','activityType')
+# Merge the the activity labels with the data_mean_std to form a data set with descriptive activity names
+data_mean_std_ActNames <- merge(data_mean_std, activity_labels,
+                              by='activity label',
+                              all.x=TRUE)
 
+## Step 4: Appropriately labels the data set with descriptive variable names. ##
+## Has been done in Step 1 ##
+
+##  Step 5: From the data set in step 4, creates a second, independent tidy data set with the average of  ##
+##  each variable for each activity and each subject.                                                     ##
+
+tidy_data = aggregate(data_mean_std_ActNames,
+                by = list(data_mean_std_ActNames$Subject_ID, data_mean_std_ActNames$activity_label),
+                FUN = mean)
 
